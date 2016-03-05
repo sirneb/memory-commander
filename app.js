@@ -1,4 +1,6 @@
-require('./initializers/application.js');
+require('./initializers/application');
+require('./db/initialize');
+require('./db/indexes');
 
 var express = require('express');
 var path = require('path');
@@ -18,7 +20,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'images', 'lightbulb1.png')));
-app.use(logger("dev", { stream: config.logFile }));
+app.use(logger("dev", { stream: config.logFile || process.stdout }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

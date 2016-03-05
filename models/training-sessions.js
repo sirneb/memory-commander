@@ -1,6 +1,11 @@
 'use strict';
 // db related
-var MongoClient = require('mongodb').MongoClient;
+
+var _serialize = function(persisted) {
+  persisted.id = persisted._id;
+  delete persisted['_id'];
+  return persisted;
+};
 
 class TrainingSessions {
   constructor() {
@@ -9,13 +14,9 @@ class TrainingSessions {
   static create(object) {
     return new Promise(function(fulfill, reject) {
       try {
-        MongoClient.connect(config.mongoUrl, function(err, db) {
-          if (err) {
-            reject(err);
-          }
+        dbClient.then(function(db) {
           db.collection('training_sessions').insertOne(object).then(function(saved) {
-            db.close();
-            fulfill(saved.ops[0]);
+            fulfill(_serialize(saved.ops[0]));
           });
         });
       } catch (err) {
@@ -23,6 +24,7 @@ class TrainingSessions {
       }
     });
   }
+
 };
 
 module.exports = TrainingSessions

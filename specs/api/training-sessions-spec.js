@@ -26,8 +26,8 @@ describe('/training-sessions', function() {
     it('returns an id for the training session', function(done) {
       request.post(`${baseUrl}/training-sessions`, function(err, response, body) {
           var json = JSON.parse(body);
-          expect(json._id).to.be.a('string');
-          expect(json._id).to.match(/[a-z0-9]+/);
+          expect(json.id).to.be.a('string');
+          expect(json.id).to.match(/[a-z0-9]+/);
           done();
         })
     });
